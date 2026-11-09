@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>발표자 · 같은 문서, 두 분석가</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="admin">
+  <header class="top">
+    <div class="brand">발표자 화면</div>
+    <span class="badge" id="phaseBadge">…</span>
+  </header>
+
+  <main class="wrap">
+    <section class="card" id="login">
+      <div class="kicker">발표자 코드</div>
+      <h2>Vercel에 넣은 ADMIN_CODE를 입력하세요</h2>
+      <form class="row" id="loginForm">
+        <input type="password" id="code" style="flex:1;min-width:180px" autocomplete="current-password">
+        <button class="btn" type="submit">들어가기</button>
+      </form>
+    </section>
+
+    <div id="panel" hidden style="display:grid;gap:14px">
+      <section class="card">
+        <div class="status" id="status"></div>
+      </section>
+      <section class="card">
+        <div class="kicker">단계 넘기기</div>
+        <h2>지금 단계</h2>
+        <p class="muted">누르면 학생 화면과 보드가 2~3초 안에 같이 넘어갑니다.</p>
+        <div class="phases" id="phases"></div>
+      </section>
+      <section class="card">
+        <div class="kicker">현황</div>
+        <h2>지금까지</h2>
+        <table class="stats"><tbody id="stats"></tbody></table>
+      </section>
+      <section class="card">
+        <div class="kicker">자료</div>
+        <h2>발췌문 올리기</h2>
+        <p class="muted">원문에서 직접 고른 4~5줄을 붙여 넣으세요. 건너뛴 곳은 (…)로 표시.</p>
+        <label class="field"><span class="label">화면에 보일 출처</span><input type="text" id="sourceFull"></label>
+        <label class="field"><span class="label">프롬프트에 들어갈 출처</span><span class="hint">“다음은 ○○에 실린 한 교사의 칼럼 일부다.”의 ○○</span><input type="text" id="sourceShort"></label>
+        <label class="field"><span class="label">발췌문</span><textarea id="excerpt" rows="9"></textarea><span class="hint" id="excerptCount"></span></label>
+        <div class="row"><button class="btn" id="saveDoc" type="button">자료 저장</button></div>
+      </section>
+      <section class="card">
+        <div class="kicker">설정</div>
+        <h2>AI와 보드</h2>
+        <label class="check"><input type="checkbox" id="aiEnabled"> AI 버튼 켜기</label>
+        <label class="field"><span class="label">학생 1명이 단계마다 AI를 돌릴 수 있는 횟수</span>
+          <select id="maxRuns"><option value="1">1번</option><option value="2">2번 (같은 질문, 다른 답을 보게)</option><option value="3">3번</option></select></label>
+        <label class="check"><input type="checkbox" id="showNames"> 보드에 이름 표시</label>
+        <label class="field"><span class="label">예시 연구 질문 (학생이 비워 두면 이 질문으로)</span><input type="text" id="defaultRQ"></label>
+        <div class="row"><button class="btn" id="saveSettings" type="button">설정 저장</button></div>
+      </section>
+      <section class="card">
+        <div class="kicker">링크</div>
+        <h2>학생 · 보드</h2>
+        <div class="grid2">
+          <div class="links" id="links"></div>
+          <div><div class="qr" id="qr"></div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="kicker">데이터</div>
+        <h2>내려받기 · 지우기</h2>
+        <p class="muted">수업이 끝나면 내려받아 두세요. 리허설 뒤에는 ‘모두 지우기’로 비우고 시작하세요.</p>
+        <div class="row">
+          <button class="btn dark" id="export" type="button">전체 내려받기 (JSON)</button>
+          <button class="btn ghost" id="reset" type="button">모두 지우기</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="/assets/admin.js"></script>
+</body>
+</html>
