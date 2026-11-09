@@ -1,7 +1,7 @@
 // 학생 화면: 발표자가 넘기는 단계를 따라가며, 같은 칼럼을 나와 AI가 읽고 비교한다.
 // 적은 답은 칸마다 자동 저장(/api/submit)되고, AI는 서버(/api/analyze)가 돌린다.
 import {
-  PHASES, PHASE_LABEL, PHASE_MIN, STEP_META, OPEN_AI, CHECK, CHECK_BOARD, CRIT,
+  PHASES, PHASE_LABEL, PHASE_MIN, P1_MIN, P2_MIN, FLOW_TOTAL, STEP_META, OPEN_AI, CHECK, CHECK_BOARD, CRIT,
   api, h, fill, fmtTime, fmtMin, secs, remaining, clockText, store, toast, flowBar,
 } from './common.js';
 import {
@@ -692,14 +692,16 @@ function aiPanel(kind) {
 // ---------------- 화면: 입장 · 대기 ----------------
 function flowCard() {
   return h('section', { class: 'card' },
-    h('div', { class: 'kicker', text: '40분 흐름' }),
+    h('div', { class: 'kicker', text: `${fmtMin(FLOW_TOTAL)} 흐름` }),
     h('h3', { text: '해 보고 · 배우고 · 다시 해 본다' }),
     flowBar(),
     h('ul', { class: 'flow-legend' },
-      h('li', {}, h('b', { text: '실습 1 · 11분' }), '혼자 읽기 4분 · AI 3분 30초 · 비교 3분 30초'),
-      h('li', {}, h('b', { text: '설명 · 7분' }), '다섯 질문 · 세 문서 · Scott · 볼 곳'),
-      h('li', {}, h('b', { text: '재실습 · 14분 30초' }), '출처·자료 2분 · 다시 코딩 5분 · AI 3분 · 비교 4분 30초'),
-      h('li', {}, h('b', { text: '정리 · 4분' }), 'AI와 연구자, 어디서 갈리나')));
+      h('li', {}, h('b', { text: `실습 1 · ${fmtMin(P1_MIN)}` }),
+        `혼자 읽기 ${fmtMin(PHASE_MIN.p1_human)} · AI ${fmtMin(PHASE_MIN.p1_ai)} · 비교 ${fmtMin(PHASE_MIN.p1_compare)}`),
+      h('li', {}, h('b', { text: `설명 · ${fmtMin(PHASE_MIN.explain)}` }), '다섯 질문 · 세 문서 · Scott · 볼 곳'),
+      h('li', {}, h('b', { text: `재실습 · ${fmtMin(P2_MIN)}` }),
+        `출처·자료 ${fmtMin(PHASE_MIN.p2_source)} · 다시 코딩 ${fmtMin(PHASE_MIN.p2_human)} · AI ${fmtMin(PHASE_MIN.p2_ai)} · 비교 ${fmtMin(PHASE_MIN.p2_compare)}`),
+      h('li', {}, h('b', { text: `정리 · ${fmtMin(PHASE_MIN.summary)}` }), 'AI와 연구자, 어디서 갈리나')));
 }
 async function submitJoin(name) {
   name = str(name).slice(0, 20);
@@ -836,7 +838,7 @@ function frameCards() {
       h('div', { class: 'five' },
         h('div', {}, h('small', { text: '문서가 만들어진 맥락' }), h('div', { class: 'tok' }, ['누가', '누구에게', '왜', '언제'].map((t) => h('span', { text: t })))),
         h('div', {}, h('small', { text: '연구자가 쓰는 맥락' }), h('div', { class: 'tok' }, h('span', { class: 'acc', text: '무엇의 증거로' })))),
-      h('p', { class: 'hint', text: '재실습에서 앞의 넷은 ‘출처·자료 2분’에서, 무엇의 증거로는 ‘다시 코딩’에서 문장마다 코드로 답해요.' })),
+      h('p', { class: 'hint', text: `재실습에서 앞의 넷은 ‘출처·자료 ${fmtMin(PHASE_MIN.p2_source)}’에서, 무엇의 증거로는 ‘다시 코딩’에서 문장마다 코드로 답해요.` })),
     h('section', { class: 'card' },
       h('div', { class: 'kicker', text: 'Scott (1990)' }),
       h('h3', { text: '믿기 전에 확인할 네 가지' }),
@@ -875,7 +877,7 @@ function viewP2Source() {
   const gq = (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`;
   const queries = [authorName() ? `${authorName()} 교사` : null, `${outletName()} 발행`, d ? `${d.words} 학교` : null].filter(Boolean);
   return h('div', { class: 'stack' },
-    stepHead('p2_source', '먼저 2분, 출처와 추가 자료', '휴대폰으로 찾아보고 적어요. 다섯 질문 가운데 누가·누구에게·왜·언제는 여기서 답해요. 해석을 도울 자료를 찾았다면 아래에 남겨요. AI는 이 단계를 하지 않아요.'),
+    stepHead('p2_source', `먼저 ${fmtMin(PHASE_MIN.p2_source)}, 출처와 추가 자료`, '휴대폰으로 찾아보고 적어요. 다섯 질문 가운데 누가·누구에게·왜·언제는 여기서 답해요. 해석을 도울 자료를 찾았다면 아래에 남겨요. AI는 이 단계를 하지 않아요.'),
     h('section', { class: 'card' },
       qhead('⓪', '누가 · 누구에게 · 언제 · 왜'),
       field('srcAuthor', '누가: 필자는 누구인가?', null, S.src.author, upd('src', (v) => { S.src.author = v; }), { max: 200 }),

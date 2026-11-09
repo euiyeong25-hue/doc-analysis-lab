@@ -31,13 +31,21 @@ export const STEP_META = {
 // AI는 이 단계에서만 돌릴 수 있다 (api/analyze.js와 같게)
 export const OPEN_AI = { p1: ['p1_ai', 'p1_compare'], p2: ['p2_ai', 'p2_compare'] };
 
-// 40분: 도입 2분 30초 · 실습 1 11분 · 설명 7분 · 재실습 14분 30초 · 정리 4분 · 여유 1분
+// 단계별 시간(분). 여기만 고치면 학생 · 보드 · 발표자 화면의 시계와 안내가 함께 바뀐다.
+// 도입 2분 30초 · 실습 1 11분(5·3·3) · 설명 7분 · 재실습 18분(5·5·3·5) · 정리 4분
 export const PHASE_MIN = {
-  p1_human: 4, p1_ai: 3.5, p1_compare: 3.5, explain: 7,
-  p2_source: 2, p2_human: 5, p2_ai: 3, p2_compare: 4.5, summary: 4,
+  p1_human: 5, p1_ai: 3, p1_compare: 3, explain: 7,
+  p2_source: 5, p2_human: 5, p2_ai: 3, p2_compare: 5, summary: 4,
 };
-
-export const FLOW = [['도입', 2.5, 'f-in'], ['실습 1', 11, 'f-p1'], ['설명', 7, 'f-ex'], ['재실습', 14.5, 'f-p2'], ['정리', 4, 'f-sum'], ['여유', 1, 'f-free']];
+export const INTRO_MIN = 2.5;
+const sumMin = (ids) => ids.reduce((a, k) => a + PHASE_MIN[k], 0);
+export const P1_MIN = sumMin(['p1_human', 'p1_ai', 'p1_compare']);
+export const P2_MIN = sumMin(['p2_source', 'p2_human', 'p2_ai', 'p2_compare']);
+export const FLOW = [
+  ['도입', INTRO_MIN, 'f-in'], ['실습 1', P1_MIN, 'f-p1'], ['설명', PHASE_MIN.explain, 'f-ex'],
+  ['재실습', P2_MIN, 'f-p2'], ['정리', PHASE_MIN.summary, 'f-sum'],
+];
+export const FLOW_TOTAL = FLOW.reduce((a, f) => a + f[1], 0);
 
 export const CHECK = [['me', '나만'], ['ai', 'AI만'], ['both', '둘 다'], ['none', '둘 다 못함']];
 export const CHECK_BOARD = [['me', '사람만'], ['ai', 'AI만'], ['both', '둘 다'], ['none', '둘 다 못함']];
@@ -127,7 +135,7 @@ export function toast(msg, bad = false) {
 }
 
 export function flowBar() {
-  return h('div', { class: 'flow', role: 'img', 'aria-label': '도입 2분 30초, 실습 1 11분, 설명 7분, 재실습 14분 30초, 정리 4분, 여유 1분' },
+  return h('div', { class: 'flow', role: 'img', 'aria-label': FLOW.map(([l, m]) => `${l} ${fmtMin(m)}`).join(', ') },
     FLOW.map(([l, m, c]) => h('div', { class: c, title: `${l} ${fmtMin(m)}`, style: { flexGrow: String(m), flexBasis: '0' } }, h('span', { text: l }))));
 }
 

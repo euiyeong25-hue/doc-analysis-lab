@@ -1,6 +1,6 @@
 // 프로젝터 보드: 발표자가 넘기는 단계에 맞춰, 진행 상황과 반 전체 결과를 크게 보여 준다.
 import {
-  PHASE_LABEL, CHECK_BOARD, api, h, remaining, clockText, makeQR, flowBar,
+  PHASE_LABEL, PHASE_MIN, CHECK_BOARD, api, h, fmtMin, remaining, clockText, makeQR, flowBar,
 } from './common.js';
 import {
   makeDoc, circ, scopeWord, P1_HEAD, P1_TASK, P2_HEAD, P2_TASK, fillPrompt,
@@ -141,7 +141,7 @@ function byPhase(p) {
     case 'p1_compare': return p1Result('실습 1 · ③ 나와 AI, 무엇이 같고 달랐나');
     case 'explain': return p1Result('설명 · 이 단어들에서 시작해요');
     case 'p2_source':
-      return waitView('재실습 · ⓪ 출처·자료 2분', '누가 · 누구에게 · 왜 · 언제를 찾고, 해석을 도울 추가 자료를 남겨요. AI는 이 단계를 하지 않아요.',
+      return waitView(`재실습 · ⓪ 출처·자료 ${fmtMin(PHASE_MIN.p2_source)}`, '누가 · 누구에게 · 왜 · 언제를 찾고, 해석을 도울 추가 자료를 남겨요. AI는 이 단계를 하지 않아요.',
         [['출처·자료를 적은 사람', B.counts.src]], extrasPanel());
     case 'p2_human':
       return waitView('재실습 · ① 다시 코딩', `내 연구 질문을 들고, ${U} 안을 문장 단위로 다시 읽어요. 문장마다 ‘무엇의 증거인가’를 코드로 붙여요.`,
