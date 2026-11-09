@@ -297,7 +297,7 @@ function renderSteps() {
       class: `st${id === ui.view ? ' on' : ''}${id === cfg.phase ? ' now' : ''}${isDone(id) ? ' done' : ''}${prev && prev !== m.group ? ' gs' : ''}`,
       disabled: idx(id) > now,
       'aria-current': id === ui.view ? 'step' : null,
-      onclick: () => goView(id),
+      onclick: () => { ui.tapped = true; goView(id); },
     }, h('small', { text: m.group }), h('span', { text: m.name }));
     prev = m.group;
     return b;
@@ -308,9 +308,16 @@ function renderSteps() {
     if (on) {
       const br = box.getBoundingClientRect();
       const r = on.getBoundingClientRect();
-      box.scrollLeft += (r.left - br.left) - (br.width - r.width) / 2;
+      if (ui.tapped) {
+        // 학생이 직접 누른 탭: 띠를 움직이지 않는다. 가장자리에 걸쳐 있을 때만 살짝 당긴다.
+        if (r.left < br.left) box.scrollLeft -= br.left - r.left + 12;
+        else if (r.right > br.right) box.scrollLeft += r.right - br.right + 12;
+      } else {
+        box.scrollLeft += (r.left - br.left) - (br.width - r.width) / 2; // 발표자가 넘긴 단계는 가운데로
+      }
     }
   }
+  ui.tapped = false;
 }
 function goView(id) {
   ui.view = id;
