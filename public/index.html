@@ -3,43 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14161B" media="(prefers-color-scheme: dark)">
   <title>같은 문서, 두 분석가</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-  <header class="top">
-    <div class="brand">같은 문서, 두 분석가</div>
-    <span class="who" id="who"></span>
-    <span class="badge" id="phaseBadge">…</span>
+  <header class="top" id="top">
+    <div class="in top-in">
+      <span class="brand hide-sm">같은 문서, 두 분석가</span>
+      <span class="badge" id="phaseBadge">…</span>
+      <span class="clock" id="clock"></span>
+      <span class="who" id="who"></span>
+    </div>
   </header>
-
-  <main class="wrap">
-    <section class="card" id="joinCard" hidden>
-      <div class="kicker">입장</div>
-      <h2>이름(또는 별명)을 적어 주세요</h2>
-      <p class="muted">보드에는 기본적으로 이름 없이 답만 모입니다.</p>
-      <form id="joinForm" class="row">
-        <input type="text" id="joinName" maxlength="20" placeholder="예: 우엉" autocomplete="nickname" style="flex:1;min-width:160px">
-        <button class="btn" type="submit">입장</button>
-      </form>
-    </section>
-
-    <section class="card doc" id="doc" hidden>
-      <div class="doc-head">
-        <b>자료</b>
-        <span class="doc-source" id="docSource"></span>
-        <button class="linkbtn" id="docToggle" type="button">접기</button>
-      </div>
-      <div class="doc-text" id="docText"></div>
-    </section>
-
-    <div id="phase" style="display:grid;gap:14px"></div>
-  </main>
-
-  <p class="foot">AI 답에는 모델과 실행 시각, 보낸 프롬프트가 함께 기록돼요 — AI의 분석도 하나의 문서니까요.</p>
+  <nav class="steps-band" id="stepsBand" aria-label="단계" hidden>
+    <div class="in steps" id="steps"></div>
+  </nav>
+  <div class="in back-wrap" id="backWrap" hidden></div>
+  <div class="in layout solo" id="layout">
+    <aside class="doc" id="doc" aria-label="문서" hidden></aside>
+    <main class="task" id="task"></main>
+  </div>
+  <p class="foot">AI 답은 모델 이름 · 실행 시각 · 보낸 질문과 함께 기록돼요. AI의 분석도 하나의 문서니까요.</p>
   <script type="module" src="/assets/student.js"></script>
 </body>
 </html>

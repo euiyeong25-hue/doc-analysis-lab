@@ -6,53 +6,23 @@
   <title>보드 · 같은 문서, 두 분석가</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body class="board">
-  <header class="board-top">
-    <div class="brand">같은 문서, 두 분석가</div>
-    <span class="badge" id="phase">…</span>
+  <header class="b-top">
+    <span class="brand">같은 문서, 두 분석가</span>
+    <span class="badge" id="phaseBadge">…</span>
+    <span class="clock" id="clock"></span>
     <span class="count" id="count"></span>
   </header>
-
-  <section class="lobby" id="lobby" hidden>
-    <h1>휴대폰으로 들어와 주세요</h1>
-    <div class="qr" id="qrBig"></div>
-    <div class="url" id="url"></div>
-    <div class="big" id="lobbyCount"></div>
-  </section>
-
-  <div id="main">
-    <nav class="tabs">
-      <button type="button" data-tab="p1">1차 · 틀 없이</button>
-      <button type="button" data-tab="p2">재실습 · 틀을 들고</button>
-    </nav>
-
-    <div class="bwrap" id="tab-p1">
-      <div class="cols2">
-        <div class="col"><h3>사람의 한 문장 <span class="n" id="n-p1h"></span></h3><ol class="items" id="p1h"></ol></div>
-        <div class="col ai"><h3>AI의 한 문장 <span class="n" id="n-p1a"></span></h3><ol class="items" id="p1a"></ol></div>
-      </div>
-      <div class="col"><h3>달랐던 점 <span class="sub">짝마다 한 단어</span></h3><div class="chips" id="chips"></div></div>
-    </div>
-
-    <div class="bwrap" id="tab-p2" hidden>
-      <div class="cols2">
-        <div class="col"><h3>사람의 한 문장, 다시 <span class="n" id="n-p2h"></span></h3><ol class="items" id="p2h"></ol></div>
-        <div class="col ai"><h3>틀을 받은 AI의 한 문장 <span class="n" id="n-p2a"></span></h3><ol class="items" id="p2a"></ol></div>
-      </div>
-      <div class="cols4">
-        <div class="col"><h3>① 맥락 <span class="sub">그래도 남는 차이</span></h3><ol class="items" id="r-context"></ol></div>
-        <div class="col"><h3>② 목적 <span class="sub">그래도 남는 차이</span></h3><ol class="items" id="r-purpose"></ol></div>
-        <div class="col"><h3>③ 검증 <span class="sub">그래도 남는 차이</span></h3><ol class="items" id="r-verify"></ol></div>
-        <div class="col"><h3>④ 표현 <span class="sub">그래도 남는 차이</span></h3><ol class="items" id="r-expression"></ol></div>
-      </div>
-    </div>
-  </div>
-
-  <aside class="corner-qr" id="corner"><div class="qr" id="qrSmall"></div><div>늦게 왔다면 여기로</div></aside>
+  <nav class="b-tabs" id="tabs" aria-label="보기" hidden></nav>
+  <main class="b-wrap" id="main"></main>
+  <aside class="corner-qr" id="corner" hidden>
+    <div class="qr" id="qrSmall"></div>
+    <div>늦게 왔다면 여기로</div>
+  </aside>
   <script type="module" src="/assets/board.js"></script>
 </body>
 </html>
