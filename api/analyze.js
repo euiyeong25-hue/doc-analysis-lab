@@ -40,8 +40,13 @@ export default async function handler(req, res) {
     }
     send(res, 200, { run: entry, runs });
   } catch (e) {
-    const status = e?.status === 429 ? 429 : 502;
-    const msg = e?.status === 429 ? 'AI가 잠깐 붐벼요. 10초 뒤에 다시 눌러 주세요.' : `AI 호출에 실패했어요: ${e.message}`;
+    console.error('[analyze]', e?.status, e?.message);
+    const m = String(e?.message || '');
+    let status = 502;
+    let msg = `AI 호출에 실패했어요: ${m.slice(0, 300)}`;
+    if (e?.status === 429 || e?.status === 529) { status = 429; msg = 'AI가 잠깐 붐벼요. 10초 뒤에 다시 눌러 주세요.'; }
+    else if (e?.status === 401 || e?.status === 403) msg = 'AI 키가 맞지 않거나 만료됐어요. 발표자에게 알려 주세요.';
+    else if (/credit balance/i.test(m)) msg = 'API 충전금이 모자라요. 발표자에게 알려 주세요.';
     send(res, status, { error: msg });
   }
 }
